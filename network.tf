@@ -49,30 +49,10 @@ resource "oci_core_security_list" "dokploy_security_list" {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
     tcp_options {
-      min = 8000
-      max = 8000
+      min = 3000
+      max = 3000
     }
-    description = "Allow HTTP traffic for Dokploy on port 8000"
-  }
-
-  ingress_security_rules {
-    protocol = "6" # TCP
-    source   = "0.0.0.0/0"
-    tcp_options {
-      min = 6001
-      max = 6001
-    }
-    description = "Allow WebSocket traffic for Dokploy on port 6001"
-  }
-
-  ingress_security_rules {
-    protocol = "6" # TCP
-    source   = "0.0.0.0/0"
-    tcp_options {
-      min = 6002
-      max = 6002
-    }
-    description = "Allow terminal traffic for Dokploy on port 6002"
+    description = "Allow HTTP traffic for Dokploy on port 3000"
   }
 
   ingress_security_rules {
@@ -96,6 +76,17 @@ resource "oci_core_security_list" "dokploy_security_list" {
     description = "Allow HTTP traffic on port 80"
   }
 
+  # Reverse Traefik Proxy (optional)
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 81
+      max = 81
+    }
+    description = "Allow Traefik HTTP traffic on port 81"
+  }
+
   ingress_security_rules {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
@@ -104,6 +95,16 @@ resource "oci_core_security_list" "dokploy_security_list" {
       max = 443
     }
     description = "Allow HTTPS traffic on port 443"
+  }
+
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 444
+      max = 444
+    }
+    description = "Allow Traefik HTTPS traffic on port 444"
   }
 
   # Egress Rule (optional, if needed)
