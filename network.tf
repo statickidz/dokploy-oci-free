@@ -87,6 +87,31 @@ resource "oci_core_security_list" "dokploy_security_list" {
     description = "Allow HTTPS traffic on port 443"
   }
 
+  # ICMP traffic
+  ingress_security_rules {
+    description = "ICMP traffic for 3, 4"
+    icmp_options {
+      code = "4"
+      type = "3"
+    }
+    protocol    = "1"
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+
+  ingress_security_rules {
+    description = "ICMP traffic for 3"
+    icmp_options {
+      code = "-1"
+      type = "3"
+    }
+    protocol    = "1"
+    source      = "10.0.0.0/16"
+    source_type = "CIDR_BLOCK"
+    stateless   = "false"
+  }
+
   # Traefik Proxy
   ingress_security_rules {
     protocol = "6" # TCP
@@ -111,7 +136,7 @@ resource "oci_core_security_list" "dokploy_security_list" {
   # Ingress rules for Docker Swarm
   ingress_security_rules {
     protocol = "6" # TCP
-    source   = "0.0.0.0/0"
+    source   = "10.0.0.0/16"
     tcp_options {
       min = 2376
       max = 2376
