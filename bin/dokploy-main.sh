@@ -17,5 +17,12 @@ systemctl status sshd
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 systemctl restart sshd
 
+# Allow Docker Swarm traffic
+iptables -I INPUT 1 -p tcp --dport 2377 -j ACCEPT
+iptables -I INPUT 1 -p udp --dport 7946 -j ACCEPT
+iptables -I INPUT 1 -p tcp --dport 7946 -j ACCEPT
+iptables -I INPUT 1 -p udp --dport 4789 -j ACCEPT
+netfilter-persistent save
+
 # Install Dokploy
 curl -sSL https://dokploy.com/install.sh | sh
