@@ -44,7 +44,7 @@ resource "oci_core_security_list" "dokploy_security_list" {
   vcn_id         = oci_core_vcn.dokploy_vcn.id
   display_name   = "Dokploy Security List"
 
-  # Ingress Rules for Dokploy and Reverse Proxy
+  # Ingress Rules for Dokploy
   ingress_security_rules {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
@@ -55,6 +55,7 @@ resource "oci_core_security_list" "dokploy_security_list" {
     description = "Allow HTTP traffic for Dokploy on port 3000"
   }
 
+  # SSH
   ingress_security_rules {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
@@ -65,7 +66,7 @@ resource "oci_core_security_list" "dokploy_security_list" {
     description = "Allow SSH traffic on port 22"
   }
 
-  # Reverse Proxy (optional)
+  # HTTP & HTTPS traffic
   ingress_security_rules {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
@@ -76,7 +77,17 @@ resource "oci_core_security_list" "dokploy_security_list" {
     description = "Allow HTTP traffic on port 80"
   }
 
-  # Reverse Traefik Proxy (optional)
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 443
+      max = 443
+    }
+    description = "Allow HTTPS traffic on port 443"
+  }
+
+  # Traefik Proxy
   ingress_security_rules {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
@@ -91,20 +102,61 @@ resource "oci_core_security_list" "dokploy_security_list" {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
     tcp_options {
-      min = 443
-      max = 443
+      min = 444
+      max = 444
     }
-    description = "Allow HTTPS traffic on port 443"
+    description = "Allow Traefik HTTPS traffic on port 444"
+  }
+
+  # Ingress rules for Docker Swarm
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 2377
+      max = 2377
+    }
+    description = "Allow Docker Swarm traffic on port 2377"
   }
 
   ingress_security_rules {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
     tcp_options {
-      min = 444
-      max = 444
+      min = 7946
+      max = 7946
     }
-    description = "Allow Traefik HTTPS traffic on port 444"
+    description = "Allow Docker Swarm traffic on port 7946"
+  }
+
+  ingress_security_rules {
+    protocol = "17" # UDP
+    source   = "0.0.0.0/0"
+    udp_options {
+      min = 7946
+      max = 7946
+    }
+    description = "Allow Docker Swarm UDP traffic on port 7946"
+  }
+
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 4789
+      max = 4789
+    }
+    description = "Allow Docker Swarm traffic on port 4789"
+  }
+
+  ingress_security_rules {
+    protocol = "17" # UDP
+    source   = "0.0.0.0/0"
+    udp_options {
+      min = 4789
+      max = 4789
+    }
+    description = "Allow Docker Swarm UDP traffic on port 4789"
   }
 
   # Egress Rule (optional, if needed)
