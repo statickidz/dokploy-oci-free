@@ -113,6 +113,16 @@ resource "oci_core_security_list" "dokploy_security_list" {
     protocol = "6" # TCP
     source   = "0.0.0.0/0"
     tcp_options {
+      min = 2376
+      max = 2376
+    }
+    description = "Allow Docker Swarm traffic on port 2376"
+  }
+
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
       min = 2377
       max = 2377
     }
@@ -137,16 +147,6 @@ resource "oci_core_security_list" "dokploy_security_list" {
       max = 7946
     }
     description = "Allow Docker Swarm UDP traffic on port 7946"
-  }
-
-  ingress_security_rules {
-    protocol = "6" # TCP
-    source   = "0.0.0.0/0"
-    tcp_options {
-      min = 4789
-      max = 4789
-    }
-    description = "Allow Docker Swarm traffic on port 4789"
   }
 
   ingress_security_rules {
