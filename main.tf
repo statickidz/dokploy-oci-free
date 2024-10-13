@@ -43,7 +43,7 @@ resource "oci_core_instance" "dokploy_main" {
   }
 
   create_vnic_details {
-    display_name              = "vnic-dokploy-main-${random_string.resource_code.result}"
+    display_name              = "dokploy-main-${random_string.resource_code.result}"
     subnet_id                 = oci_core_subnet.dokploy_subnet.id
     assign_ipv6ip             = false
     assign_private_dns_record = true
@@ -131,7 +131,7 @@ resource "oci_core_instance" "dokploy_worker" {
   }
 
   create_vnic_details {
-    display_name              = "vnic-dokploy-worker-${random_string.resource_code.result}"
+    display_name              = "dokploy-worker-${count.index + 1}-${random_string.resource_code.result}"
     subnet_id                 = oci_core_subnet.dokploy_subnet.id
     assign_ipv6ip             = false
     assign_private_dns_record = true
