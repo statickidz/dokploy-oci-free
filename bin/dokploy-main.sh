@@ -17,5 +17,5 @@ systemctl status sshd
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 systemctl restart sshd
 
-# Install Coolify
+# Install Dokploy
 curl -sSL https://dokploy.com/install.sh | sh
