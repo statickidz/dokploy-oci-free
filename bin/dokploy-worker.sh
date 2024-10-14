@@ -16,3 +16,7 @@ systemctl status sshd
 # Permit root login
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 systemctl restart sshd
+
+# Install Docker
+curl -sSL https://get.docker.com | sh
+docker swarm leave --force 2>/dev/null
