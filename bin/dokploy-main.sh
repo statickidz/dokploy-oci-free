@@ -18,6 +18,8 @@ sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd
 systemctl restart sshd
 
 # Allow Docker Swarm traffic
+ufw allow 80,443,3000,996,7946,4789,2377/tcp;
+ufw allow 7946,4789,2377/udp;
 iptables -I INPUT 1 -p tcp --dport 2377 -j ACCEPT
 iptables -I INPUT 1 -p udp --dport 7946 -j ACCEPT
 iptables -I INPUT 1 -p tcp --dport 7946 -j ACCEPT
