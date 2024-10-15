@@ -4,6 +4,8 @@ This Terraform project deploys a Dokploy instance along with worker nodes in Ora
 
 ## About Dokploy
 
+![Dokploy Logo](img/logo.webp)
+
 Dokploy is an open-source deployment tool designed to simplify the management of servers, applications, and databases on your own infrastructure with minimal setup. It streamlines CI/CD pipelines, ensuring easy and consistent deployments.
 
 For more information, visit the official page at [dokploy.io](https://dokploy.io).
