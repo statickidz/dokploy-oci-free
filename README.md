@@ -4,13 +4,13 @@ This Terraform project deploys a Dokploy instance along with worker nodes in Ora
 
 ## About Dokploy
 
-![Dokploy Logo](img/dokploy-logo.webp)
+![Dokploy Logo](doc/dokploy-logo.webp)
 
 Dokploy is an open-source deployment tool designed to simplify the management of servers, applications, and databases on your own infrastructure with minimal setup. It streamlines CI/CD pipelines, ensuring easy and consistent deployments.
 
 For more information, visit the official page at [dokploy.com](https://dokploy.com).
 
-![Dokploy Screenshot](img/dokploy-screenshot.png)
+![Dokploy Screenshot](doc/dokploy-screenshot.png)
 
 ## OCI Free Tier Overview
 
@@ -66,7 +66,7 @@ See more info about configuring your cluster on the [Dokploy Cluster Docs](https
     -   `dokploy-main.sh`: Script to install Dokploy on the main instance.
     -   `dokploy-worker.sh`: Script to configure necessary dependencies on worker instances.
 -   `helper.tf`: Contains helper functions and reusable modules to streamline the infrastructure setup.
--   `img/`: Directory for images used in the README (e.g., screenshots of Dokploy setup).
+-   `doc/`: Directory for images used in the README (e.g., screenshots of Dokploy setup).
 -   `locals.tf`: Defines local values used throughout the Terraform configuration, such as dynamic values or reusable expressions.
 -   `main.tf`: Core Terraform configuration file that defines the infrastructure for Dokploy's main and worker instances.
 -   `network.tf`: Configuration for setting up the required OCI networking resources (VCNs, subnets, security lists, etc.).
