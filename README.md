@@ -14,9 +14,11 @@ For more information, visit the official page at [dokploy.com](https://dokploy.c
 
 ## OCI Free Tier Overview
 
-Oracle Cloud Infrastructure offers a Free Tier that provides resources at no cost, including VM.Standard.E2.1.Micro instances (1 OCPU and 1 GB of RAM), which are ideal for light workloads or testing Dokploy deployments.
+Oracle Cloud Infrastructure (OCI) offers a Free Tier with resources ideal for light workloads, such as the VM.Standard.E2.1.Micro instance. These resources are free as long as usage remains within the limits.
 
-Free Tier resources include networking and storage options, which are sufficient for small-scale applications without costs as long as the Free Tier limits are observed. For more details, see [OCI Free Tier](https://www.oracle.com/cloud/free/).
+For detailed information about the free tier, visit [OCI Free Tier](https://www.oracle.com/cloud/free/).
+
+*Note: Free Tier instances are subject to availability, and you might encounter "Out of Capacity" errors. To bypass this, upgrade to a paid account. This keeps your free-tier benefits but removes the capacity limitations, ensuring access to higher-tier resources if needed.*
 
 ## Prerequisites
 
@@ -58,7 +60,6 @@ To begin deploying applications, you need to add servers to your Dokploy cluster
 After setting up the main Dokploy instance, you can expand your cluster by adding worker nodes. These worker instances will help distribute the workload for your deployments.
 
 See more info about configuring your cluster on the [Dokploy Cluster Docs](https://docs.dokploy.com/en/docs/core/server/cluster).
-
 
 ## Project Structure
 
