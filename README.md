@@ -78,7 +78,7 @@ See more info about configuring your cluster on the [Dokploy Cluster Docs](https
 
 ## Terraform Variables
 
-Below are the key variables for deployment, which can be defined in `variables.tf` or passed during `terraform apply`:
+Below are the key variables for deployment which are defined in `variables.tf`:
 
 -   `ssh_authorized_keys`: Your SSH public key for accessing the instances.
 -   `compartment_id`: OCI compartment ID for instance deployment.
