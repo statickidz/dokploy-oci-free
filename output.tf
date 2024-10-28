@@ -1,5 +1,5 @@
 output "dokploy_dashboard" {
-  value = "http://${oci_core_instance.dokploy_main.public_ip}:3000/ (wait 3-5 minutes to finish Dokploy installation)"
+  value = "http://${oci_core_instance.dokploy_main.public_ip}:3000/ (wait 3-5 minutes to finish Dokploy installation) (default password: captain42)"
 }
 
 output "dokploy_worker_ips" {
