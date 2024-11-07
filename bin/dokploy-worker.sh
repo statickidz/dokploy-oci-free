@@ -27,5 +27,5 @@ iptables -I INPUT 1 -p udp --dport 4789 -j ACCEPT
 netfilter-persistent save
 
 # Install Docker
-curl -sSL https://get.docker.com | sh
-docker swarm leave --force 2>/dev/null
+# curl -sSL https://get.docker.com | sh
+# docker swarm leave --force 2>/dev/null
