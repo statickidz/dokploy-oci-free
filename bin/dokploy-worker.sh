@@ -30,10 +30,10 @@ iptables -I INPUT 1 -p udp --dport 7946 -j ACCEPT
 iptables -I INPUT 1 -p tcp --dport 7946 -j ACCEPT
 iptables -I INPUT 1 -p udp --dport 4789 -j ACCEPT
 
-netfilter-persistent save
-
 # Reorder FORWARD chain rules:
 # Remove the default REJECT rule (ignore error if not found)
 iptables -D FORWARD -j REJECT --reject-with icmp-host-prohibited || true
 # Append the REJECT rule at the end so that Docker rules can be matched first
 iptables -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+netfilter-persistent save
