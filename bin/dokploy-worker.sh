@@ -17,10 +17,6 @@ systemctl status sshd
 sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 systemctl restart sshd
 
-# Install Docker
-curl -sSL https://get.docker.com | sh
-docker swarm leave --force 2>/dev/null
-
 # Allow Docker Swarm traffic
 ufw allow 80,443,3000,996,7946,4789,2377/tcp
 ufw allow 7946,4789,2377/udp
