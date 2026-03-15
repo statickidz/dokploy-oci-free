@@ -46,3 +46,9 @@ variable "ocpus" {
   type        = string
   default     = "1" # OCI Free
 }
+
+variable "use_reserved_public_ip" {
+  description = "If true, assign reserved (static) public IPs to instances instead of ephemeral. Reserved IPs persist if the instance is recreated."
+  type        = bool
+  default     = false
+}

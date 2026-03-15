@@ -17,7 +17,7 @@ resource "oci_core_instance" "dokploy_main" {
     subnet_id                 = oci_core_subnet.dokploy_subnet.id
     assign_ipv6ip             = false
     assign_private_dns_record = true
-    assign_public_ip          = true
+    assign_public_ip          = !var.use_reserved_public_ip
   }
 
   availability_config {
@@ -105,7 +105,7 @@ resource "oci_core_instance" "dokploy_worker" {
     subnet_id                 = oci_core_subnet.dokploy_subnet.id
     assign_ipv6ip             = false
     assign_private_dns_record = true
-    assign_public_ip          = true
+    assign_public_ip          = !var.use_reserved_public_ip
   }
 
   availability_config {
