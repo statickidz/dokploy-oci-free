@@ -31,7 +31,7 @@ For detailed information about the free tier, visit [OCI Free Tier](https://www.
 Before you begin, ensure you have the following:
 
 -   An Oracle Cloud Infrastructure (OCI) account with Free Tier resources available.
--   An SSH public key for accessing the instances.
+-   One or more SSH public keys for accessing the instances (one per client machine).
 
 ## Servers & Cluster
 
@@ -39,10 +39,20 @@ Before you begin, ensure you have the following:
 
 To begin deploying applications, you need to add servers to your Dokploy cluster. A server in Dokploy is where your applications will be deployed and managed.
 
+#### Accessing the Dokploy Dashboard
+
+Port 3000 is not exposed to the internet. Access the dashboard securely via an SSH tunnel:
+
+```bash
+ssh -L 3000:localhost:3000 ubuntu@<main-ip>
+```
+
+Then open [http://localhost:3000](http://localhost:3000) in your browser. The tunnel must remain open while you use the dashboard.
+
 #### Steps to Add Servers:
 
 1.  **Login to Dokploy Dashboard**:
-    -   Access the Dokploy dashboard via the main instance's public IP address. You'll need to use the login credentials configured during setup.
+    -   Open the SSH tunnel above, then navigate to [http://localhost:3000](http://localhost:3000).
 1.  **Generate SSH Keys**:
     -   On the left-hand menu, click on "SSH Keys" and add your private and public SSH key to connect your server.
 2.  **Navigate to Servers Section**:
@@ -51,7 +61,7 @@ To begin deploying applications, you need to add servers to your Dokploy cluster
     -   **Server Name**: Give your server a meaningful name.
     -   **IP Address**: Enter the public IP address of the instance. If you’re using private networking, you can enter the private IP address instead.
     -   **SSH Key**: Select the previous created SSH key.
-    -   **Username**: The SSH user for connecting to the server, use `root`.
+    -   **Username**: The SSH user for connecting to the server, use `ubuntu`.
 4.  **Submit**:
     -   After filling out the necessary fields, click "Submit" to add the server.
 
@@ -91,12 +101,20 @@ Note: **Reserved** Static IP does not change unless you release it. It stays in 
 
 Below are the key variables for deployment which are defined in `variables.tf`:
 
--   `ssh_authorized_keys`: Your SSH public key for accessing the instances.
+-   `ssh_authorized_keys`: One or more SSH public keys for accessing the instances. Accepts a list, so multiple keys can be provided for different client machines:
+    ```hcl
+    ssh_authorized_keys = [
+      "ssh-rsa AAAA...key1 laptop",
+      "ssh-rsa AAAA...key2 desktop",
+      "ssh-ed25519 AAAA...key3 workstation",
+    ]
+    ```
+    All keys are written to `/home/ubuntu/.ssh/authorized_keys` on every instance.
 -   `compartment_id`: OCI compartment ID for instance deployment.
 -   `num_worker_instances`: Number of worker instances to deploy for Dokploy.
 -   `availability_domain_main`: Availability domain for the main instance.
 -   `availability_domain_workers`: Availability domains for worker instances.
--   `instance_shape`: Instance shape (e.g., VM.Standard.E2.1.Micro) used for deployment.
--   `memory_in_gbs`: Memory size (GB) per instance.
--   `ocpus`: Number of OCPUs per instance.
+-   `instance_shape`: Instance shape used for deployment. Defaults to `VM.Standard.A1.Flex` (Ampere A1), which is OCI Always Free eligible.
+-   `memory_in_gbs`: Memory size (GB) per instance. Defaults to `12` (2 instances × 12 GB = 24 GB total, the Always Free ceiling).
+-   `ocpus`: Number of OCPUs per instance. Defaults to `2` (2 instances × 2 OCPUs = 4 OCPUs total, the Always Free ceiling).
 -   `use_reserved_public_ip`: If `true`, assign reserved (static) public IPs to the main and worker instances instead of ephemeral IPs. Default is `false`. See [Reserved (static) public IPs](#reserved-static-public-ips).

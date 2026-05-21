@@ -10,3 +10,7 @@
 .ssh
 **/node_modules/
 .terraform.lock.hcl
+# Variable values — contain sensitive data (OCIDs, IPs, SSH keys)
+*.tfvars
+*.tfvars.json
+AGENTS.md

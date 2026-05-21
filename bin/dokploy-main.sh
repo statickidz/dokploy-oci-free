@@ -1,28 +1,42 @@
 #!/bin/bash
 
-# Add ubuntu SSH authorized keys to the root user
-mkdir -p /root/.ssh
-cp /home/ubuntu/.ssh/authorized_keys /root/.ssh/
-chown root:root /root/.ssh/authorized_keys
-chmod 600 /root/.ssh/authorized_keys
+# Disable automatic updates to prevent apt lock being re-acquired mid-install
+systemctl disable --now unattended-upgrades apt-daily.service apt-daily-upgrade.service \
+  apt-daily.timer apt-daily-upgrade.timer 2>/dev/null || true
 
-# Add ubuntu user to sudoers
-echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# Wait for any remaining apt lock to be released
+while fuser /var/lib/dpkg/lock-frontend /var/lib/apt/lists/lock /var/lib/dpkg/lock >/dev/null 2>&1; do
+  sleep 5
+done
 
-# OpenSSH
-apt install -y openssh-server
-systemctl status sshd
+# Install dependencies
+apt-get install -y openssh-server ufw iptables-persistent
 
-# Permit root login
-sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-systemctl restart sshd
+# Install Docker before running the Dokploy installer so it finds it already present
+DOCKER_INSTALLER="$(mktemp)"
+curl -fsSL https://get.docker.com -o "$DOCKER_INSTALLER"
+chmod 700 "$DOCKER_INSTALLER"
+sh "$DOCKER_INSTALLER"
+rm -f "$DOCKER_INSTALLER"
+systemctl enable docker
+systemctl start docker
+
+# Install ufw-docker to prevent Docker from bypassing UFW rules
+curl -fsSL https://github.com/chaifeng/ufw-docker/raw/master/ufw-docker \
+  -o /usr/local/bin/ufw-docker
+chmod +x /usr/local/bin/ufw-docker
+ufw-docker install
 
 # Install Dokploy
-curl -sSL https://dokploy.com/install.sh | sh
+DOKPLOY_INSTALLER="$(mktemp)"
+curl -sSfL https://dokploy.com/install.sh -o "$DOKPLOY_INSTALLER"
+chmod 700 "$DOKPLOY_INSTALLER"
+bash "$DOKPLOY_INSTALLER"
+rm -f "$DOKPLOY_INSTALLER"
 
 # Allow Docker Swarm traffic
-ufw allow 80,443,3000,996,7946,4789,2377/tcp
-ufw allow 7946,4789,2377/udp
+/usr/sbin/ufw allow 80,443,996,7946,4789,2377/tcp
+/usr/sbin/ufw allow 7946,4789,2377/udp
 
 iptables -I INPUT 1 -p tcp --dport 2377 -j ACCEPT
 iptables -I INPUT 1 -p udp --dport 7946 -j ACCEPT

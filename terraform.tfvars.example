@@ -1,0 +1,46 @@
+# Dokploy OCI Free Tier — variable values template
+#
+# Copy this file to terraform.tfvars and fill in your values:
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# terraform.tfvars is gitignored and will never be committed.
+
+# ------------------------------------------------------------------------------
+# Required
+# ------------------------------------------------------------------------------
+
+# OCI compartment OCID
+# Find it: OCI Console → Profile (top right) → Tenancy → OCID
+compartment_id = "ocid1.compartment.oc1..aaaaaaaa..."
+
+# Ubuntu 22.04 image OCID for your chosen region
+# Find it: https://docs.oracle.com/en-us/iaas/images/image/128dbc42-65a9-4ed0-a2db-be7aa584c726/index.htm
+source_image_id = "ocid1.image.oc1..aaaaaaaa..."
+
+# Availability domain for the main instance
+# Find it: OCI Console → Compute → Instances → Availability domain (left menu)
+# Example: "WBJv:EU-FRANKFURT-1-AD-1"
+availability_domain_main = ""
+
+# Availability domain for worker instances (use a different AD to the main instance)
+# Example: "WBJv:EU-FRANKFURT-1-AD-2"
+availability_domain_workers = ""
+
+# SSH public keys — one per client machine you want to connect from
+# Get your key: cat ~/.ssh/id_ed25519.pub  (or id_rsa.pub)
+ssh_authorized_keys = [
+  "ssh-ed25519 AAAA... your-machine-name",
+  # "ssh-ed25519 AAAA... another-machine",
+]
+
+# ------------------------------------------------------------------------------
+# Optional — defaults use 2 × (2 OCPU, 12 GB) layout (1 main + 1 worker)
+# This uses the full Always Free allocation: 4 OCPUs and 24 GB total.
+# ------------------------------------------------------------------------------
+
+# Number of worker instances (max 3 to stay within Always Free limits)
+# num_worker_instances = 1
+
+# instance_shape = "VM.Standard.A1.Flex"
+# ocpus          = "2"
+# memory_in_gbs  = "12"

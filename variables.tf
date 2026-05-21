@@ -1,6 +1,6 @@
 variable "ssh_authorized_keys" {
-  description = "SSH public key for instances. For example: ssh-rsa AAEAAAA....3R ssh-key-2024-09-03"
-  type        = string
+  description = "One or more SSH public keys for instance access. For example: [\"ssh-rsa AAAA...key1\", \"ssh-rsa AAAA...key2\"]"
+  type        = list(string)
 }
 
 variable "compartment_id" {
@@ -14,7 +14,7 @@ variable "source_image_id" {
 }
 
 variable "num_worker_instances" {
-  description = "Number of Dokploy worker instances to deploy (max 3 for free tier)."
+  description = "Number of Dokploy worker instances to deploy. Max 3 for Always Free tier. Default is 1 (1 main + 1 worker = 2 instances, 4 OCPUs, 24 GB total)."
   type        = number
   default     = 1
 }
@@ -25,7 +25,7 @@ variable "availability_domain_main" {
 }
 
 variable "availability_domain_workers" {
-  description = "Availability domain for dokploy-main instance. Find it Core Infrastructure → Compute → Instances → Availability domain (left menu). For example: WBJv:EU-FRANKFURT-1-AD-2"
+  description = "Availability domain for dokploy-worker instances. Find it Core Infrastructure → Compute → Instances → Availability domain (left menu). For example: WBJv:EU-FRANKFURT-1-AD-2"
   type        = string
 }
 
@@ -36,15 +36,15 @@ variable "instance_shape" {
 }
 
 variable "memory_in_gbs" {
-  description = "Memory in GBs for instance shape config. 6 GB is the maximum for free tier with 3 working nodes."
+  description = "Memory in GBs per instance. At 12 GB with 2 instances (1 main + 1 worker), total is 24 GB — the Always Free ceiling."
   type        = string
-  default     = "6" # OCI Free
+  default     = "12" # OCI Free
 }
 
 variable "ocpus" {
-  description = "OCPUs for instance shape config. 1 OCPU is the maximum for free tier with 3 working nodes."
+  description = "OCPUs per instance. At 2 OCPUs with 2 instances (1 main + 1 worker), total is 4 OCPUs — the Always Free ceiling."
   type        = string
-  default     = "1" # OCI Free
+  default     = "2" # OCI Free
 }
 
 variable "use_reserved_public_ip" {

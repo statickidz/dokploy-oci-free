@@ -42,7 +42,7 @@ resource "oci_core_instance" "dokploy_main" {
     is_management_disabled = "false"
     is_monitoring_disabled = "false"
     plugins_config {
-      desired_state = "DISABLED"
+      desired_state = "ENABLED"
       name          = "Vulnerability Scanning"
     }
     plugins_config {
@@ -130,7 +130,7 @@ resource "oci_core_instance" "dokploy_worker" {
     is_management_disabled = "false"
     is_monitoring_disabled = "false"
     plugins_config {
-      desired_state = "DISABLED"
+      desired_state = "ENABLED"
       name          = "Vulnerability Scanning"
     }
     plugins_config {
