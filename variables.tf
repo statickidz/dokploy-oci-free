@@ -14,7 +14,7 @@ variable "source_image_id" {
 }
 
 variable "num_worker_instances" {
-  description = "Number of Dokploy worker instances to deploy (max 3 for free tier)."
+  description = "Number of Dokploy worker instances to deploy (max 1 for free tier)."
   type        = number
   default     = 1
 }
@@ -25,7 +25,7 @@ variable "availability_domain_main" {
 }
 
 variable "availability_domain_workers" {
-  description = "Availability domain for dokploy-main instance. Find it Core Infrastructure → Compute → Instances → Availability domain (left menu). For example: WBJv:EU-FRANKFURT-1-AD-2"
+  description = "Availability domain for dokploy-worker instances. Find it Core Infrastructure → Compute → Instances → Availability domain (left menu). For example: WBJv:EU-FRANKFURT-1-AD-2"
   type        = string
 }
 
@@ -36,13 +36,13 @@ variable "instance_shape" {
 }
 
 variable "memory_in_gbs" {
-  description = "Memory in GBs for instance shape config. 6 GB is the maximum for free tier with 3 working nodes."
+  description = "Memory in GBs for instance shape config. 6 GB is the maximum for free tier with 1 working node (12 GB with no workers)."
   type        = string
   default     = "6" # OCI Free
 }
 
 variable "ocpus" {
-  description = "OCPUs for instance shape config. 1 OCPU is the maximum for free tier with 3 working nodes."
+  description = "OCPUs for instance shape config. 1 OCPU is the maximum for free tier with 1 working node (2 OCPUs with no workers)."
   type        = string
   default     = "1" # OCI Free
 }
