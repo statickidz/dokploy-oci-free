@@ -82,7 +82,7 @@ Note: **Reserved** Static IP does not change unless you release it. It stays in 
 -   `main.tf`: Core Terraform configuration file that defines the infrastructure for Dokploy's main and worker instances.
 -   `network.tf`: Configuration for setting up the required OCI networking resources (VCNs, subnets, security lists, etc.).
 -   `output.tf`: Specifies the output variables such as the IP addresses for the dashboard and worker nodes.
--   `reserved_ips.tf`: Optional reserved (static) public IPs for the main and worker instances when `use_reserved_public_ip` is enabled (see [Reserved public IPs](#reserved-static-public-ips)).
+-   `reserved_ips.tf`: Optional reserved (static) public IPs for the main and worker instances when `use_reserved_public_ip` is enabled (see [Reserved public IPs](#updating-the-server-ip-in-dokploy-eg-after-switching-to-reserved-ip)).
 -   `providers.tf`: Declares the required cloud providers and versions, particularly for Oracle Cloud Infrastructure.
 -   `README.md`: This file, providing instructions on deployment and usage.
 -   `variables.tf`: Defines input variables used in the project, including compartment ID, SSH keys, instance shape, and more.
@@ -96,7 +96,8 @@ Below are the key variables for deployment which are defined in `variables.tf`:
 -   `num_worker_instances`: Number of worker instances to deploy for Dokploy.
 -   `availability_domain_main`: Availability domain for the main instance.
 -   `availability_domain_workers`: Availability domains for worker instances.
--   `instance_shape`: Instance shape (e.g., VM.Standard.E2.1.Micro) used for deployment.
+-   `instance_shape`: Instance shape (e.g., VM.Standard.A1.Flex) used for deployment.
 -   `memory_in_gbs`: Memory size (GB) per instance.
 -   `ocpus`: Number of OCPUs per instance.
--   `use_reserved_public_ip`: If `true`, assign reserved (static) public IPs to the main and worker instances instead of ephemeral IPs. Default is `false`. See [Reserved (static) public IPs](#reserved-static-public-ips).
+-   `boot_volume_size_in_gbs`: Boot volume (VM disk) size in GB per instance, applied to the main and worker instances. Leave it unset to keep the image default (47 GB); when set, OCI accepts 50–32768. Keeping the total across all instances within your OCI Free Tier storage allowance is up to you (e.g. with 200 GB, a 150 GB disk fits only with `num_worker_instances = 0`). Increasing it on an existing deployment resizes the disk in place; reboot the instances so Ubuntu uses the new space.
+-   `use_reserved_public_ip`: If `true`, assign reserved (static) public IPs to the main and worker instances instead of ephemeral IPs. Default is `false`. See [Reserved (static) public IPs](#updating-the-server-ip-in-dokploy-eg-after-switching-to-reserved-ip).
