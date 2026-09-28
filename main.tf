@@ -34,8 +34,9 @@ resource "oci_core_instance" "dokploy_main" {
   }
 
   source_details {
-    source_id   = local.instance_config.source_details.source_id
-    source_type = local.instance_config.source_details.source_type
+    source_id               = local.instance_config.source_details.source_id
+    source_type             = local.instance_config.source_details.source_type
+    boot_volume_size_in_gbs = local.instance_config.source_details.boot_volume_size_in_gbs
   }
 
   agent_config {
@@ -122,8 +123,9 @@ resource "oci_core_instance" "dokploy_worker" {
   }
 
   source_details {
-    source_id   = local.instance_config.source_details.source_id
-    source_type = local.instance_config.source_details.source_type
+    source_id               = local.instance_config.source_details.source_id
+    source_type             = local.instance_config.source_details.source_type
+    boot_volume_size_in_gbs = local.instance_config.source_details.boot_volume_size_in_gbs
   }
 
   agent_config {

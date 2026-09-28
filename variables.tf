@@ -47,6 +47,17 @@ variable "ocpus" {
   default     = "1" # OCI Free
 }
 
+variable "boot_volume_size_in_gbs" {
+  description = "Boot volume (disk) size in GBs for each instance (minimum 50). Leave empty to keep the image default (47 GB). 100 GB is the maximum for free tier with 1 working node (200 GB with no workers)."
+  type        = number
+  default     = null # Image default (47 GB)
+
+  validation {
+    condition     = var.boot_volume_size_in_gbs == null ? true : (var.boot_volume_size_in_gbs >= 50 && var.boot_volume_size_in_gbs <= 32768 && floor(var.boot_volume_size_in_gbs) == var.boot_volume_size_in_gbs)
+    error_message = "boot_volume_size_in_gbs must be empty or a whole number between 50 and 32768 (OCI boot volume limits)."
+  }
+}
+
 variable "use_reserved_public_ip" {
   description = "If true, assign reserved (static) public IPs to instances instead of ephemeral. Reserved IPs persist if the instance is recreated."
   type        = bool

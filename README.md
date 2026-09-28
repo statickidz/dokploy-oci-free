@@ -99,4 +99,5 @@ Below are the key variables for deployment which are defined in `variables.tf`:
 -   `instance_shape`: Instance shape (e.g., VM.Standard.E2.1.Micro) used for deployment.
 -   `memory_in_gbs`: Memory size (GB) per instance.
 -   `ocpus`: Number of OCPUs per instance.
+-   `boot_volume_size_in_gbs`: Boot volume (VM disk) size in GB per instance, applied to the main and worker instances. Leave it unset to keep the image default (47 GB); when set, OCI accepts 50–32768. Keeping the total across all instances within your OCI Free Tier storage allowance is up to you (e.g. with 200 GB, a 150 GB disk fits only with `num_worker_instances = 0`). Increasing it on an existing deployment resizes the disk in place; reboot the instances so Ubuntu uses the new space.
 -   `use_reserved_public_ip`: If `true`, assign reserved (static) public IPs to the main and worker instances instead of ephemeral IPs. Default is `false`. See [Reserved (static) public IPs](#reserved-static-public-ips).
